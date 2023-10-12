@@ -4,14 +4,14 @@ from . import app
 
 @app.route("/")
 def home():
-    return render_template("base.html")
+    return render_template("movements.html")
 
 
 @app.route("/purchase")
-def buy():
+def create_purchase():
     return "Se efectuara el cambio de monedas"
 
 
 @app.route("/status")
-def investments():
+def calculate_investment():
     return "Estado de inversion"
