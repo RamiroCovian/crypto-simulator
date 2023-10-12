@@ -1,11 +1,20 @@
 :root {
     --primary-color: #d81b60;
     --secundary-color: khaki;
-
+    
     --neutral-100: #f0f0f0;
     --neutral-20: #312505;
-
+    
     --default-border: solid thin var(--primary-color);
+    --default-border-internal: solid 2px var(--neutral-20);
+}
+* {
+    font-family: 'Cairo', Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: black;
+    color: whitesmoke;
 }
 
 header {
@@ -14,7 +23,7 @@ header {
     height: 60px;
     line-height: 60px;
     font-size: 45px;
-    font-family: "Cairo", Arial, Helvetica, sans-serif;
+    font-family: 'Monda', Arial, Helvetica, sans-serif;
     text-align: center;
 }
 
@@ -41,13 +50,22 @@ main {
     padding: 20px;
 }
 
-table.paper {
+table.table {
     width: 100%;
     margin: 0;
+    border-top: var(--default-border-internal);
+    border-bottom: var(--default-border-internal);
+    border-left: var(--default-border-internal);
+    border-right: var(--default-border-internal);
+}
+table.table .title-table {
+    border-bottom: var(--default-border-internal);
+    font-size: 20px;
 }
 
-table.paper .title-table {
-    border-bottom: var(--default-border);
+.row-data {
+    font-size: medium;
+    text-align: center;
 }
 
 .h1 {
@@ -56,7 +74,9 @@ table.paper .title-table {
     text-align: center;
 }
 
-.footer {
+footer {
+    background-color: #d81b60;
     padding: 20px;
     border-top: solid thin var(--primary-color);
+
 }
