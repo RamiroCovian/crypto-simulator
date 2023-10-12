@@ -26,4 +26,8 @@ Proyecto Final Flask | KeepCoding Bootcamp | Aprende a Programar desde Cero (Ful
   pip install -r requirements.txt
   ```
 
-
+* **Crear variables de entorno**
+  ```
+  - Crear un archivo ".env", en el se deben copiar las variables de entorno que se encuentran en el archivo ".env.template"
+  - Modificar "FLASK_DEBUG=False" por "FLASK_DEBUG=True"
+  ```
