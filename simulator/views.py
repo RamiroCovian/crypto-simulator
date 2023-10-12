@@ -1,9 +1,10 @@
+from flask import render_template
 from . import app
 
 
 @app.route("/")
 def home():
-    return "Mostrara una tabla con moviminetos"
+    return render_template("base.html")
 
 
 @app.route("/purchase")
