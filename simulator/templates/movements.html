@@ -1,30 +1,37 @@
 {% extends "base.html" %}
 
 {% block head_title %}
-{{ super() }}: Movimientos
+{{ super() }} Movimientos
 {% endblock head_title %}
 
+{% block nav %}
+<nav aria-label="breadcrumb" class="navbar">Inicio | <a href="/purchase">Compra</a> | <a href="/status">Estado</a></nav>
+{% endblock nav %}
+
 {% block content %}
-    <h1 class="h1">MOVIMIENTOS</h1>
-    <table class="paper">
+<h1 class="h1">MOVIMIENTOS</h1>
+<table role="grid" class="table">
+    <thead>
+    <tr>
+        <th scope="col" class="title-table">Fecha</th>
+        <th scope="col" class="title-table">Hora</th>
+        <th scope="col" class="title-table">Venta</th>
+        <th scope="col" class="title-table">Cantidad</th>
+        <th scope="col" class="title-table">Compra</th>
+        <th scope="col" class="title-table">Cantidad</th>
+        <th scope="col" class="title-table">Precio Ejecutado</th>
+    </tr>
+    </thead>
+    <tbody>
         <tr>
-            <th class="title-table">Fecha</th>
-            <th class="title-table">Hora</th>
-            <th class="title-table">Venta</th>
-            <th class="title-table">Cantidad</th>
-            <th class="title-table">Compra</th>
-            <th class="title-table">Cantidad</th>
-            <th class="title-table">Precio Ejecutado</th>
+            <td scope="row" class="row-data">2023/10/12</td>
+            <td scope="row" class="row-data">14:56</td>
+            <td scope="row" class="row-data">EUR</td>
+            <td scope="row" class="row-data">10</td>
+            <td scope="row" class="row-data">BTC</td>
+            <td scope="row" class="row-data">0,000384</td>
+            <td scope="row" class="row-data">26000</td>
         </tr>
-    
-        <tr>
-            <th>2023/10/12</th>
-            <th>14:56</th>
-            <th>EUR</th>
-            <th>10</th>
-            <th>BTC</th>
-            <th>0,000384</th>
-            <th>26000</th>
-        </tr>
-    </table>
+    </tbody>
+</table>
 {% endblock content %}

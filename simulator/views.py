@@ -9,9 +9,9 @@ def home():
 
 @app.route("/purchase")
 def create_purchase():
-    return "Se efectuara el cambio de monedas"
+    return render_template("buy.html")
 
 
 @app.route("/status")
 def calculate_investment():
-    return "Estado de inversion"
+    return render_template("investments.html")
