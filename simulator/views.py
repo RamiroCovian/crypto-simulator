@@ -1,10 +1,14 @@
 from flask import render_template
-from . import app
+from . import app, PATH
+from .models import DBManager
 
 
 @app.route("/")
 def home():
-    return render_template("movements.html")
+    db = DBManager(PATH)
+    sql = "SELECT id, date, time, from_currency, from_quantity, to_currency, to_quantity FROM movements"
+    movements = db.consultSQL(sql)
+    return render_template("movements.html", movs=movements)
 
 
 @app.route("/purchase")
