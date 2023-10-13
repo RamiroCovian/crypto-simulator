@@ -4,36 +4,46 @@
     
     --neutral-100: #f0f0f0;
     --neutral-20: #312505;
+    --neutral-0: black;
     
     --default-border: solid thin var(--primary-color);
     --default-border-internal: solid 2px var(--neutral-20);
+
+    --default-font-headers: 'Monda',
+        Arial,
+        Helvetica,
+        sans-serif;;
+    --default-font-text: 'Cairo',
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 * {
-    font-family: 'Cairo', Arial, Helvetica, sans-serif;
+    font-family: var(--default-font-text);
 }
 
 body {
-    background-color: black;
-    color: whitesmoke;
+    background-color: var(--neutral-0);
 }
 
 header {
     background-color: var(--primary-color);
     color: var(--neutral-100);
-    height: 60px;
-    line-height: 60px;
-    font-size: 45px;
-    font-family: 'Monda', Arial, Helvetica, sans-serif;
+    height: 30px;
+    line-height: 15px;
+    font-size: 30px;
+    font-family: var(--default-font-headers);
     text-align: center;
 }
 
-.navbar {
+nav[aria-label=breadcrumb].navbar {
     background-color: var(--secundary-color);
     color: var(--neutral-20);
     height: 30px;
     line-height: 30px;
     text-align: center;
     font-size: medium;
+    display:block
 }
 
 .navbar a,
@@ -42,10 +52,11 @@ header {
 .navbar a:visited,
 .navbar a:hover {
     color: var(--neutral-20);
+    padding: 0 10px;
 }
 
 main {
-    max-width: 600px;
+    max-width: 800px;
     margin: auto;
     padding: 20px;
 }
@@ -60,23 +71,26 @@ table.table {
 }
 table.table .title-table {
     border-bottom: var(--default-border-internal);
-    font-size: 20px;
+    font-size: 16px;
+    color: var(--neutral-100);
 }
 
-.row-data {
+td.row-data {
+    color: var(--neutral-100);
     font-size: medium;
     text-align: center;
 }
 
 .h1 {
-    font-family: 'Monda', Arial, Helvetica, sans-serif;
-    font-size: 40px;
+    font-family: var(--default-font-headers);
+    font-size: 30px;
     text-align: center;
+    background-color: var(--primary-color);
 }
 
-footer {
-    background-color: #d81b60;
+.footer {
+    background-color: var(--primary-color);
     padding: 20px;
-    border-top: solid thin var(--primary-color);
+    border-top: solid 3px var(--secundary-color);
 
 }
