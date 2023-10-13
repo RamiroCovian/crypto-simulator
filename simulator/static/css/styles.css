@@ -88,6 +88,11 @@ td.row-data {
     background-color: var(--primary-color);
 }
 
+.empty-list {
+    text-align: center;
+    padding: 20px;
+}
+
 .footer {
     background-color: var(--primary-color);
     padding: 20px;

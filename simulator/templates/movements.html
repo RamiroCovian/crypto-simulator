@@ -23,15 +23,67 @@
     </tr>
     </thead>
     <tbody>
+        {% if movs %}
+        {% for m in movs %}
         <tr>
-            <td scope="row" class="row-data">2023/10/12</td>
-            <td scope="row" class="row-data">14:56</td>
-            <td scope="row" class="row-data">EUR</td>
-            <td scope="row" class="row-data">10</td>
-            <td scope="row" class="row-data">BTC</td>
-            <td scope="row" class="row-data">0,000384</td>
-            <td scope="row" class="row-data">26000</td>
+            <td scope="row" class="row-data">
+                {% if m.date %}
+                {{ m.date }}
+                {% else %}
+                ---
+                {% endif %}
+            </td>
+
+            <td scope="row" class="row-data">
+                {% if m.time %}
+                {{ m.time }}
+                {% else %}
+                ---
+                {% endif %}
+            </td>
+            <td scope="row" class="row-data">
+                {% if m.from_currency %}
+                {{ m.from_currency }}
+                {% else %}
+                ---
+                {% endif %}
+            </td>
+            <td scope="row" class="row-data">
+                {% if m.from_quantity %}
+                {{ m.from_quantity }}
+                {% else %}
+                ---
+                {% endif %}
+            </td>
+            <td scope="row" class="row-data">
+                {% if m.to_currency %}
+                {{ m.to_currency }}
+                {% else %}
+                ---
+                {% endif %}
+            </td>
+            <td scope="row" class="row-data">
+                {% if m.to_quantity %}
+                {{ m.to_quantity }}
+                {% else %}
+                ---
+                {% endif %}
+            </td>
+            <td scope="row" class="row-data">
+                {% if m.from_quantity and m.to_quantity %}
+                    {{ (m.from_quantity)/(m.to_quantity) }}
+                {% else %}
+                ---
+                {% endif %}
+            </td>
         </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="7" class="empty-list">No hay movimientos disponibles</td>
+        </tr>
+        {% endif %}
+
     </tbody>
 </table>
 {% endblock content %}
