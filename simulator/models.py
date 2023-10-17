@@ -32,3 +32,17 @@ class DBManager:
 
         self.disconnect(connection)
         return self.records
+
+    def new_buy(self, consult, parameters):
+        connection, cursor = self.connect()
+        result = False
+        try:
+            cursor.execute(consult, parameters)
+            connection.commit()
+            result = True
+        except Exception as ex:
+            print(ex)
+            connection.rollback()
+
+        self.disconnect(connection)
+        return result

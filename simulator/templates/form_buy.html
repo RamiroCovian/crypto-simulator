@@ -12,7 +12,7 @@
 {% block content %}
 <h1 class="h1">COMPRA DE CRYPTOS</h1>
 
-<form action="/purchase">
+<form action="/purchase/" method="POST">
     {{ form.csrf_token }}
     <div class="form-from">
         {{ form.from_currency.label }}
