@@ -1,5 +1,6 @@
-from flask import render_template
+from flask import render_template, request
 from . import app, PATH
+from .forms import MovementForm
 from .models import DBManager
 
 
@@ -11,9 +12,12 @@ def home():
     return render_template("movements.html", movs=movements)
 
 
-@app.route("/purchase")
+@app.route("/purchase", methods=["GET", "POST"])
 def create_purchase():
-    return render_template("buy.html")
+    if request.method == "GET":
+        movements = {}
+        form = MovementForm(data=movements)
+    return render_template("form_buy.html", form=form)
 
 
 @app.route("/status")
