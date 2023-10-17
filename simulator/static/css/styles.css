@@ -99,3 +99,11 @@ td.row-data {
     border-top: solid 3px var(--secundary-color);
 
 }
+
+.form-from,
+.form-to,
+.form-price-unit {
+    display: inline-block;
+    margin-right: 30px;
+
+}

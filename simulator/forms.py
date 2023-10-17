@@ -4,14 +4,16 @@ from wtforms import DecimalField, SelectField, SubmitField
 
 class MovementForm(FlaskForm):
     from_currency = SelectField(
-        "Seleccione una moneda",
+        "De:",
         choices=[("Euro", "EUR"), ("Bitcoin", "BTC"), ("Ethereum", "ETH")],
     )
     to_currency = SelectField(
-        "Seleccione una moneda",
+        "Para:",
         choices=[("Euro", "EUR"), ("Bitcoin", "BTC"), ("Ethereum", "ETH")],
     )
-    from_quantity = DecimalField("Cantidad", places=6)
+    from_quantity = DecimalField("Cantidad:", places=6)
+    to_quantity = DecimalField("Cantidad:", places=6)
+    price_unit = DecimalField("Precio Unitario:", places=6)
 
     submit = SubmitField("Guardar")
 

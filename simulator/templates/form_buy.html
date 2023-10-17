@@ -14,20 +14,28 @@
 
 <form action="/purchase">
     {{ form.csrf_token }}
-    <div class="form-field">
+    <div class="form-from">
         {{ form.from_currency.label }}
         {{ form.from_currency() }}
-
-    </div>
-
-    <div class="form-field">
-        {{ form.to_currency.label }}
-        {{ form.to_currency() }}
-    </div>
-
-    <div class="form-field">
         {{ form.from_quantity.label }}
         {{ form.from_quantity() }}
+    </div>
+
+
+    <div class="form-to">
+        {{ form.to_currency.label }}
+        {{ form.to_currency() }}
+        {{ form.to_quantity.label }}
+        {{ form.to_quantity() }}
+    </div>
+
+    <div class="form-price-unit">
+        {{ form.price_unit.label }}
+        {{ form.price_unit() }}
+    </div>
+
+    <div class="button">
+        <!-- #TODO: Poner boton para calcular cambio -->
     </div>
 
     <div class="actions">
