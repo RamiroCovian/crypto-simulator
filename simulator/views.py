@@ -2,6 +2,7 @@ from flask import redirect, render_template, request, url_for
 from . import app, PATH
 from .forms import MovementForm
 from .models import DBManager
+import datetime
 
 
 @app.route("/")
@@ -21,9 +22,10 @@ def create_purchase():
     if request.method == "POST":
         form = MovementForm(data=request.form)
         db = DBManager(PATH)
-        sql = "INSERT INTO movements(from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?)"
-        # TODO: Debo cargar DATE y TIME a la db , da error por falta de esos datos!
+        sql = "INSERT INTO movements(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?)"
         parameters = (
+            datetime.datetime.now(datetime.timezone.utc).date(),
+            datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S.%f"),
             form.from_currency.data,
             float(form.from_quantity.data),
             form.to_currency.data,
