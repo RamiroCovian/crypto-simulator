@@ -10,6 +10,20 @@
 
 {% block content %}
 <h1 class="h1">MOVIMIENTOS</h1>
+
+{% with message = get_flashed_messages() %}
+{% if message %}
+<div class="success-flash">
+    <!-- #TODO: Corregir el icono, dibujarlo -->
+    <p><i class="fa-solid fa-circle-check fa-2xl" style="color: #1dc347;"></i></p>
+    <div class="message-flash">
+        {% for msg in message %}
+        <p>{{ msg }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endwith %}
 <figure>
     <table role="grid" class="table">
         <thead>
@@ -26,6 +40,7 @@
         <tbody>
             {% if movs %}
             {% for m in movs %}
+            <tr {% if m.has_errors %} class="error" {% endif %}></tr>
             <tr>
                 <td scope="row" class="row-data">
                     {% if m.date %}
@@ -78,6 +93,16 @@
                     {% endif %}
                 </td>
             </tr>
+                {% if m.has_errors %}
+                <tr>
+                    <td></td>
+                    <td colspan="7">
+                        {% for error in m.errores %}
+                        <p class="error">{{ error }}</p>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
             {% endfor %}
             {% else %}
             <tr>
