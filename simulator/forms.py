@@ -1,23 +1,54 @@
 from flask_wtf import FlaskForm
 from wtforms import DecimalField, SelectField, SubmitField
+from wtforms.validators import InputRequired, NumberRange
 
 
 class MovementForm(FlaskForm):
     from_currency = SelectField(
         "De:",
-        choices=[("Euro", "EUR"), ("Bitcoin", "BTC"), ("Ethereum", "ETH")],
+        choices=[
+            ("EUR", "Euro"),
+            ("BTC", "Bitcoin"),
+            ("ETH", "Ethereum"),
+            ("USDT", "Tether UDSt"),
+            ("ADA", "Cardano"),
+            ("SOL", "Solana"),
+            ("XRP", "XRP"),
+            ("DOT", "Polkadot"),
+            ("DOGE", "Dogecoin"),
+            ("SHIB", "Shiba Inu"),
+        ],
     )
     to_currency = SelectField(
         "Para:",
-        choices=[("Euro", "EUR"), ("Bitcoin", "BTC"), ("Ethereum", "ETH")],
+        choices=[
+            ("EUR", "Euro"),
+            ("BTC", "Bitcoin"),
+            ("ETH", "Ethereum"),
+            ("USDT", "Tether UDSt"),
+            ("ADA", "Cardano"),
+            ("SOL", "Solana"),
+            ("XRP", "XRP"),
+            ("DOT", "Polkadot"),
+            ("DOGE", "Dogecoin"),
+            ("SHIB", "Shiba Inu"),
+        ],
     )
-    from_quantity = DecimalField("Cantidad:", places=6)
-    to_quantity = DecimalField("Cantidad:", places=6)
-    price_unit = DecimalField("Precio Unitario:", places=6)
+    from_quantity = DecimalField(
+        "Cantidad:",
+        places=6,
+        validators=[InputRequired(), NumberRange(min=0.00001, max=99999999)],
+    )
+    to_quantity = DecimalField(
+        "Cantidad:",
+        places=6,
+        validators=[InputRequired(), NumberRange(min=0.00001, max=99999999)],
+    )
+    price_unit = DecimalField(
+        "Precio Unitario:",
+        places=6,
+        validators=[InputRequired(), NumberRange(min=0.00001, max=99999999)],
+    )
 
-    submit = SubmitField("Guardar")
-
-
-"""
-#TODO: FALTA VALIDAR CAMPOS
-"""
+    submit_calcular = SubmitField("Calcular")
+    submit_aceptar = SubmitField("Aceptar")
