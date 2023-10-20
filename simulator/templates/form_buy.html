@@ -15,8 +15,7 @@
 {% with message = get_flashed_messages() %}
 {% if message %}
 <div class="error-flash">
-    <!-- #TODO: Corregir el icono, dibujarlo -->
-    <p><i class="fa-solid fa-circle-check fa-2xl" style="color: #600;"></i></p>
+    <p><i class="fa-solid fa-bomb fa-2xl" style="color: #c92c2c;"></i></p>
     <div class="message-flash">
         {% for msg in message %}
         <p>{{ msg }}</p>
