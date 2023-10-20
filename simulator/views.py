@@ -1,4 +1,4 @@
-from flask import redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for
 from . import app, PATH
 from .forms import MovementForm
 from .models import DBManager
@@ -19,6 +19,42 @@ def create_purchase():
         movements = {}
         form = MovementForm(data=movements)
         return render_template("form_buy.html", form=form)
+
+    form = MovementForm(request.form)
+    from_currency = request.values.get("from_currency")
+    to_currency = request.values.get("to_currency")
+    from_quantity = request.values.get("from_quantity")
+    to_quantity = request.values.get("to_quantity")
+    price_unit = request.values.get("price_unit")
+
+    if request.values.get("submit_calcular"):
+        if not form.validate():
+            if from_quantity == "" or from_quantity == "0":
+                flash(
+                    "LAS CANTIDADES de venta DEBEN SER SUPERIOR A 0.00001",
+                    category="Error",
+                )
+                return render_template("form_buy.html", form=form)
+            if to_quantity == "" or to_quantity == "0":
+                flash(
+                    "LAS CANTIDADES de compra DEBEN SER SUPERIOR A 0.00001",
+                    category="Error",
+                )
+                return render_template("form_buy.html", form=form)
+            if price_unit == "" or price_unit == "0":
+                flash(
+                    "LAS CANTIDADES de unidades DEBEN SER SUPERIOR A 0.00001",
+                    category="Error",
+                )
+                return render_template("form_buy.html", form=form)
+
+        if from_currency == to_currency:
+            flash(
+                "OPERACIÓN INCORRECTA - DEBE ELEGIR DOS MONEDAS DISTINTAS",
+                category="Error",
+            )
+            return render_template("form_buy.html", form=form)
+
     if request.method == "POST":
         form = MovementForm(data=request.form)
         db = DBManager(PATH)
@@ -33,7 +69,9 @@ def create_purchase():
         )
         result = db.new_buy(sql, parameters)
         if result:
+            flash("EL MOVIMIENTO SE HA GUARDADO CORRECTAMENTE", category="Exito")
             return redirect(url_for("home"))
+
         else:
             errors = []
             for key in form.errors:
