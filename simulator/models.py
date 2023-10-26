@@ -1,4 +1,6 @@
 import sqlite3
+from . import app
+from flask import flash
 
 
 class DBManager:
@@ -33,6 +35,28 @@ class DBManager:
         self.disconnect(connection)
         return self.records
 
+    def get_info_parameters(self, consult, parameters):
+        connection, cursor = self.connect()
+
+        cursor.execute(consult, parameters)
+        connection.commit()
+        data = cursor.fetchall()
+        if len(data) == 0:
+            return data
+
+        col_names = []
+        for col in cursor.description:
+            col_names.append(col[0])
+
+        self.records = []
+        for fact in data:
+            f = {}
+            for c, col in enumerate(col_names):
+                f[col] = fact[c]
+            self.records.append(f)
+        self.disconnect(connection)
+        return self.records
+
     def new_buy(self, consult, parameters):
         connection, cursor = self.connect()
         result = False
@@ -46,3 +70,26 @@ class DBManager:
 
         self.disconnect(connection)
         return result
+
+
+def calculate_balance():
+    coin_list = [
+        "EUR",
+        "BTC",
+        "ETH",
+        "USDT",
+        "ADA",
+        "SOL",
+        "XRP",
+        "DOT",
+        "DOGE",
+        "SHIB",
+    ]
+    calculation = {}  # Cuantas monedas tengo por crypto, no EUR
+    for coin in coin_list:
+        db = DBManager(app.config["PATH"])
+        sql = "SELECT sum(case when to_currency = ? then to_quantity else 0 end) - sum(case when  from_currency = ? then from_quantity else 0 end) as wallet_balance FROM movements;"
+        result = db.get_info_parameters(sql, (coin, coin))
+        balance = result[0]["wallet_balance"]
+        calculation[coin] = balance
+    return calculation
