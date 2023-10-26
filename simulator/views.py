@@ -1,7 +1,8 @@
-from flask import flash, render_template, request
+import datetime
+from flask import flash, redirect, render_template, request, url_for
 from . import app, PATH
 from .forms import MovementForm
-from .models import DBManager, calculate_balance
+from .models import DBManager, calculate_balance, validate
 
 
 @app.route("/")
@@ -39,7 +40,59 @@ def create_purchase():
 
     else:
         # request.method == "POST":
-        pass
+        form = MovementForm(data=request.form)
+        form.from_currency.choices = [
+            form.from_currency.data
+        ]  # Bloqueo listas una vez elegida
+        form.to_currency.choices = [form.to_currency.data]
+        wallet = calculate_balance()
+
+        if request.form.get("submit_accept") == "save" and form.validate():
+            try:
+                db = DBManager(PATH)
+                sql = "INSERT INTO movements(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?)"
+                parameters = (
+                    datetime.datetime.now(datetime.timezone.utc).date(),
+                    datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S"),
+                    form.from_currency.data,
+                    float(form.from_quantity.data),
+                    form.to_currency.data,
+                    form.to_quantity.data,
+                )
+                result = db.new_buy(
+                    sql, parameters
+                )  # Ejecuta la compra y guarda los datos de la compra
+                if result:
+                    flash(
+                        "EL MOVIMIENTO SE HA GUARDADO CORRECTAMENTE", category="Exito"
+                    )
+                    return redirect(url_for("home"))
+                else:
+                    flash(
+                        "OPERACIÓN INCORRECTA - Debes presionar el boton 'Calcular' antes de confirmar la compra",
+                        category="Error",
+                    )
+                    return render_template(
+                        "form_buy.html", form=form, empty="yes", wallet=wallet
+                    )
+            except Exception as e:
+                flash(
+                    "Error de conexion de URL",
+                    category="Error",
+                )
+                return render_template(
+                    "form_buy.html", form=form, empty="yes", wallet=wallet
+                )
+        else:
+            amount = form.from_quantity.data
+            from_curren = form.from_currency.data
+            to_current = form.to_currency.data
+
+            error = validate(amount, from_curren, to_current)
+            if error != None:
+                return render_template(
+                    "form_buy.html", form=form, empty="yes", wallet=wallet
+                )
 
 
 @app.route("/status")
