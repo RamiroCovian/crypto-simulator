@@ -1,63 +1,44 @@
 from flask_wtf import FlaskForm
-from wtforms import DecimalField, SelectField, SubmitField
+from wtforms import FloatField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 
 
 class MovementForm(FlaskForm):
     from_currency = SelectField(
         "De:",
-        choices=[
-            ("EUR", "Euro"),
-            ("BTC", "Bitcoin"),
-            ("ETH", "Ethereum"),
-            ("USDT", "Tether UDSt"),
-            ("ADA", "Cardano"),
-            ("SOL", "Solana"),
-            ("XRP", "XRP"),
-            ("DOT", "Polkadot"),
-            ("DOGE", "Dogecoin"),
-            ("SHIB", "Shiba Inu"),
-        ],
+        choices=[],
     )
     to_currency = SelectField(
         "Para:",
         choices=[
-            ("EUR", "Euro"),
-            ("BTC", "Bitcoin"),
-            ("ETH", "Ethereum"),
-            ("USDT", "Tether UDSt"),
-            ("ADA", "Cardano"),
-            ("SOL", "Solana"),
-            ("XRP", "XRP"),
-            ("DOT", "Polkadot"),
-            ("DOGE", "Dogecoin"),
-            ("SHIB", "Shiba Inu"),
+            "EUR",
+            "BTC",
+            "ETH",
+            "USDT",
+            "ADA",
+            "SOL",
+            "XRP",
+            "DOT",
+            "DOGE",
+            "SHIB",
         ],
     )
-    from_quantity = DecimalField(
+    from_quantity = FloatField(
         "Cantidad:",
-        places=6,
         validators=[
             DataRequired(message="No puede haber un movimiento sin cantidad"),
             NumberRange(min=0.00001, max=99999999),
         ],
+        render_kw={"readonly": False},
     )
-    to_quantity = DecimalField(
+    to_quantity = FloatField(
         "Cantidad:",
-        places=6,
-        validators=[
-            DataRequired(message="No puede haber un movimiento sin cantidad"),
-            NumberRange(min=0.00001, max=99999999),
-        ],
+        render_kw={"readonly": True},
     )
-    price_unit = DecimalField(
+    price_unit = FloatField(
         "Precio Unitario:",
-        places=6,
-        validators=[
-            DataRequired(message="No puede haber un movimiento sin cantidad"),
-            NumberRange(min=0.00001, max=99999999),
-        ],
+        render_kw={"readonly": True},
     )
 
-    submit_calcular = SubmitField("Calcular")
-    submit_aceptar = SubmitField("Aceptar")
+    submit_calculate = SubmitField("Calcular")
+    submit_accept = SubmitField("Aceptar")

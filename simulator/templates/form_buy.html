@@ -25,38 +25,62 @@
 {% endif %}
 {% endwith %}
 
-<!-- #TODO: Verificar errores por campos -->
-
 
 <form action="/purchase/" method="POST">
     {{ form.csrf_token }}
-    <div class="form-from">
-        {{ form.from_currency.label }}
-        {{ form.from_currency() }}
-        {{ form.from_quantity.label }}
-        {{ form.from_quantity() }}
-    </div>
+    <table class="form-from">
+        <tr>
+            <td>{{ form.from_currency.label }}</td>
+            <td>{{ form.from_currency() }}</td>
+            <td> </td>
+            <td>{{ form.to_currency.label }}</td>
+            <td>{{ form.to_currency() }}</td>
+        </tr>
 
+        <tr>
+            <td>{{ form.from_quantity.label }}</td>
+            {% if empty == "yes" %}
+            <td>{{ form.from_quantity(placeholder= "Ingrese cantidad") }}</td>
+            {% else %}
+            <td>{{ form.from_quantity(readonly= "True") }}</td>
+            {% endif %}
 
-    <div class="form-to">
-        {{ form.to_currency.label }}
-        {{ form.to_currency() }}
-        {{ form.to_quantity.label }}
-        {{ form.to_quantity() }}
-    </div>
+            <td>{{ form.submit_calculate }}</td>
 
-    <div class="form-price-unit">
-        {{ form.price_unit.label }}
-        {{ form.price_unit() }}
-    </div>
+            <td>{{ form.to_quantity.label }}</td>
+            {% if empty == "yes" %}
+            <td>0</td>
+            {% else %}
+            <td>{{ form.to_quantity() }}</td>
+            {% endif %}
+        </tr>
 
-    <div class="button">
-        <!-- #TODO: Poner boton para calcular cambio -->
-    </div>
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>{{ form.price_unit.label }}</td>
+            {% if empty == "yes" %}
+            <td>0</td>
+            {% else %}
+            <td>{{ form.price_unit() }}</td>
+            {% endif %}
+        </tr>
 
-    <div class="actions">
-        {{ form.submit_calcular }}
-        {{ form.submit_aceptar }}
-    </div>
+        <tr>
+            <td>
+                <a href="/purchase/" role="button" title="clean" id=btn_clean> <i class="fa fa-times"
+                        aria-hidden="true"></i>
+                </a>
+            </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>
+                <button name="submit_accept" type="submit_accept" value="save" title="Accept"> <i class="fa fa-check"
+                        aria-hidden="true"></i> </button>
+            </td>
+        </tr>
+    </table>
 </form>
 {% endblock content %}
