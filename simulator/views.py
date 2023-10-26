@@ -1,13 +1,14 @@
 import datetime
 from flask import flash, redirect, render_template, request, url_for
-from . import app, PATH
+from . import app
 from .forms import MovementForm
-from .models import DBManager, calculate_balance, validate
+from .models import DBManager, api_request, validate, calculate_balance
+from config import ENDPOINT, SERVER
 
 
 @app.route("/")
 def home():
-    db = DBManager(PATH)
+    db = DBManager(app.config["PATH"])
     sql = "SELECT id, date, time, from_currency, from_quantity, to_currency, to_quantity FROM movements"
     movements = db.consultSQL(sql)  # Consulto los movimientos realizados
     return render_template("movements.html", movs=movements)
@@ -38,8 +39,7 @@ def create_purchase():
             form.from_currency.choices = crypto_from
         return render_template("form_buy.html", form=form, empty="yes", wallet=wallet)
 
-    else:
-        # request.method == "POST":
+    else:  # request.method == "POST":
         form = MovementForm(data=request.form)
         form.from_currency.choices = [
             form.from_currency.data
@@ -49,7 +49,7 @@ def create_purchase():
 
         if request.form.get("submit_accept") == "save" and form.validate():
             try:
-                db = DBManager(PATH)
+                db = DBManager(app.config["PATH"])
                 sql = "INSERT INTO movements(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?)"
                 parameters = (
                     datetime.datetime.now(datetime.timezone.utc).date(),
@@ -92,6 +92,46 @@ def create_purchase():
             if error != None:
                 return render_template(
                     "form_buy.html", form=form, empty="yes", wallet=wallet
+                )
+
+            try:
+                url = SERVER + ENDPOINT + from_curren + "/" + to_current
+                dicc = api_request(url)
+                rate = dicc["rate"]  # Precio de la crypto
+                if amount != 0:
+                    to_quanti = rate * amount  # Cantidad de compra
+                    price_u = amount / to_quanti  # Precio Unitario
+                    date_buy = datetime.datetime.now(
+                        datetime.timezone.utc
+                    ).date()  # fecha y hora del momento de la consulta API
+                    time_buy = datetime.datetime.now(datetime.timezone.utc).strftime(
+                        "%H:%M:%S"
+                    )
+                    return render_template(
+                        "form_buy.html",
+                        empty="no",
+                        form=form,
+                        to_quanti=to_quanti,
+                        price_u=price_u,
+                        time_buy=time_buy,
+                        date_buy=date_buy,
+                        wallet=wallet,
+                        amount=amount,
+                    )
+                else:
+                    flash(
+                        "OPERACIÓN INCORRECTA - La cantidad debe ser distinta de 0",
+                        category="Error",
+                    )
+                    return render_template("form_buy.html", form=form, empty="yes")
+            except Exception as error:
+                print(error)
+                flash("Error de conexion de URL", category="Error")
+                return render_template(
+                    "form_buy.html",
+                    empty="yes",
+                    form=form,
+                    wallet=wallet,
                 )
 
 

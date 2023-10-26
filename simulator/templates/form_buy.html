@@ -51,7 +51,7 @@
             {% if empty == "yes" %}
             <td>0</td>
             {% else %}
-            <td>{{ form.to_quantity() }}</td>
+            <td>{{ form.to_quantity( value= "{:.6f}".format(to_quanti) ) }}</td>
             {% endif %}
         </tr>
 
@@ -63,7 +63,7 @@
             {% if empty == "yes" %}
             <td>0</td>
             {% else %}
-            <td>{{ form.price_unit() }}</td>
+            <td>{{ form.price_unit( value= "{:.6f}".format(price_u) ) }}</td>
             {% endif %}
         </tr>
 
@@ -82,5 +82,6 @@
             </td>
         </tr>
     </table>
+    <p hidden>La fecha y hora de la compra es: {{ form.date(value=date_buy) }} a las {{ form.time(value=time_buy)}}</p>
 </form>
 {% endblock content %}

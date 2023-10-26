@@ -1,6 +1,8 @@
 import sqlite3
+import requests
 from . import app
 from flask import flash
+from config import HEADERS
 
 
 class DBManager:
@@ -126,3 +128,12 @@ def validate(amount, from_curren, to_current):  # validaciones de campos
             category="Error",
         )
         return error
+
+
+def api_request(url):
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+        api = response.json()
+        return api
+    else:
+        raise Exception("Problema de consulta tipo {}".format(response.status_code))

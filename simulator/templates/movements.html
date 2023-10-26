@@ -26,15 +26,15 @@
 <figure>
     <table role="grid" class="table">
         <thead>
-        <tr>
-            <th scope="col" class="title-table">Fecha</th>
-            <th scope="col" class="title-table">Hora</th>
-            <th scope="col" class="title-table">Venta</th>
-            <th scope="col" class="title-table">Cantidad</th>
-            <th scope="col" class="title-table">Compra</th>
-            <th scope="col" class="title-table">Cantidad</th>
-            <th scope="col" class="title-table">Precio Ejecutado</th>
-        </tr>
+            <tr>
+                <th scope="col" class="title-table">Fecha</th>
+                <th scope="col" class="title-table">Hora</th>
+                <th scope="col" class="title-table">Venta</th>
+                <th scope="col" class="title-table">Cantidad</th>
+                <th scope="col" class="title-table">Compra</th>
+                <th scope="col" class="title-table">Cantidad</th>
+                <th scope="col" class="title-table">Precio Ejecutado</th>
+            </tr>
         </thead>
         <tbody>
             {% if movs %}
@@ -65,7 +65,7 @@
                 </td>
                 <td scope="row" class="row-data">
                     {% if m.from_quantity %}
-                    {{ m.from_quantity }}
+                    {{ "{:.6f}".format(m.from_quantity) }}
                     {% else %}
                     ---
                     {% endif %}
@@ -79,29 +79,19 @@
                 </td>
                 <td scope="row" class="row-data">
                     {% if m.to_quantity %}
-                    {{ m.to_quantity }}
+                    {{ "{:.6f}".format(m.to_quantity) }}
                     {% else %}
                     ---
                     {% endif %}
                 </td>
                 <td scope="row" class="row-data">
                     {% if m.from_quantity and m.to_quantity %}
-                        {{ (m.from_quantity)/(m.to_quantity) }}
+                    {{ "{:.6f}".format((m.from_quantity)/(m.to_quantity)) }}
                     {% else %}
                     ---
                     {% endif %}
                 </td>
             </tr>
-                {% if m.has_errors %}
-                <tr>
-                    <td></td>
-                    <td colspan="7">
-                        {% for error in m.errores %}
-                        <p class="error">{{ error }}</p>
-                        {% endfor %}
-                    </td>
-                </tr>
-                {% endif %}
             {% endfor %}
             {% else %}
             <tr>

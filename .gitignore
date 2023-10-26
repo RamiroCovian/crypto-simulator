@@ -161,3 +161,4 @@ cython_debug/
 
 # Ramiro
 simulator/data/
+config.py

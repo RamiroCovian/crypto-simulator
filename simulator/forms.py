@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, SelectField, SubmitField
+from wtforms import FloatField, SelectField, StringField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 
 
@@ -39,6 +39,8 @@ class MovementForm(FlaskForm):
         "Precio Unitario:",
         render_kw={"readonly": True},
     )
+    date = StringField("Fecha", render_kw={"readonly": True})
+    time = StringField("Hora", render_kw={"readonly": True})
 
     submit_calculate = SubmitField("Calcular")
     submit_accept = SubmitField("Aceptar")
