@@ -149,6 +149,37 @@ def calculate_investment():
         total_euros_invested = consult[0]["from_curr_eur"]
         consult_2 = calculate_balance_eur_invested()
         balance_of_euros_invested = consult_2[0]["balance_eur"]
+
+        try:
+            coin_list = [
+                "BTC",
+                "ETH",
+                "USDT",
+                "ADA",
+                "SOL",
+                "XRP",
+                "DOT",
+                "DOGE",
+                "SHIB",
+            ]
+            to = "EUR"
+            coin_price_list = []
+            i = 0
+            if i <= 8:
+                for coin in coin_list:
+                    url = SERVER + ENDPOINT + coin + "/" + to
+                    dicc = api_request(url)
+                    rate = dicc["rate"]
+                    coin_price_list.append(rate)
+                    print(coin_price_list)
+                    print(rate)
+                    i += 1
+
+        except Exception as error:
+            print(error)
+            flash("Error de conexion de URL", category="Error")
+            return render_template("investments.html")
+
         current_value = total_euros_invested + balance_of_euros_invested
         flash(
             "funciona a la perfeccion", category="Exito"
