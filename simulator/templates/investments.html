@@ -11,4 +11,29 @@
 {% block content %}
 <h1 class="h1">ESTADO DE LA INVERSION</h1>
 
+{% with message = get_flashed_messages() %}
+{% if message %}
+<div class="error-flash">
+    <p><i class="fa-solid fa-bomb fa-2xl" style="color: #c92c2c;"></i></p>
+    <div class="message-flash">
+        {% for msg in message %}
+        <p>{{ msg }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+
+<table>
+    <tr>
+        <td>Invertido:</td>
+        <td>{{total_euros_invested}} € </td>
+    </tr>
+    <tr>
+        <td>Valor actual:</td>
+        <td>_____________</td>
+    </tr>
+</table>
+
+
 {% endblock content %}

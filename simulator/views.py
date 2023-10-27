@@ -2,7 +2,13 @@ import datetime
 from flask import flash, redirect, render_template, request, url_for
 from . import app
 from .forms import MovementForm
-from .models import DBManager, api_request, validate, calculate_balance
+from .models import (
+    DBManager,
+    api_request,
+    calculate_balance,
+    calculate_sum_from_quantity,
+    validate,
+)
 from config import ENDPOINT, SERVER
 
 
@@ -137,4 +143,18 @@ def create_purchase():
 
 @app.route("/status")
 def calculate_investment():
-    return render_template("investments.html")
+    try:
+        consult = calculate_sum_from_quantity()
+        total_euros_invested = consult[0]["from_curr_eur"]
+
+        flash(
+            "funciona a la perfeccion", category="Exito"
+        )  ################################### BORRAR FLASH ###################################
+        return render_template(
+            "investments.html",
+            total_euros_invested=total_euros_invested,
+        )
+    except Exception as error:
+        print(error)
+        flash("Error en el acceso a la base de datos", category="Error")
+        return render_template("investments.html")

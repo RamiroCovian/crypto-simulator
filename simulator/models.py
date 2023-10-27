@@ -137,3 +137,10 @@ def api_request(url):
         return api
     else:
         raise Exception("Problema de consulta tipo {}".format(response.status_code))
+
+
+def calculate_sum_from_quantity():
+    db = DBManager(app.config["PATH"])
+    sql = "SELECT sum(from_quantity) as from_curr_eur FROM movements WHERE from_currency = 'EUR';"
+    result = db.consultSQL(sql)
+    return result
