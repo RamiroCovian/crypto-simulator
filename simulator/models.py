@@ -1,7 +1,7 @@
 import sqlite3
+from flask import flash
 import requests
 from . import app
-from flask import flash
 from config import HEADERS
 
 
@@ -74,7 +74,7 @@ class DBManager:
         return result
 
 
-def calculate_balance():
+def calculate_balance():  # Calcula cantidad de monedas
     coin_list = [
         "EUR",
         "BTC",
@@ -87,7 +87,7 @@ def calculate_balance():
         "DOGE",
         "SHIB",
     ]
-    calculation = {}  # Cuantas monedas tengo por crypto, no EUR
+    calculation = {}
     for coin in coin_list:
         db = DBManager(app.config["PATH"])
         sql = "SELECT sum(case when to_currency = ? then to_quantity else 0 end) - sum(case when  from_currency = ? then from_quantity else 0 end) as wallet_balance FROM movements;"
@@ -130,7 +130,7 @@ def validate(amount, from_curren, to_current):  # validaciones de campos
         return error
 
 
-def api_request(url):
+def api_request(url):  # Consulta de Api
     response = requests.get(url, headers=HEADERS)
     if response.status_code == 200:
         api = response.json()
@@ -139,14 +139,14 @@ def api_request(url):
         raise Exception("Problema de consulta tipo {}".format(response.status_code))
 
 
-def calculate_sum_from_quantity():
+def calculate_sum_from_quantity():  # Calcula la sumatoria de EUR invertidos
     db = DBManager(app.config["PATH"])
     sql = "SELECT sum(from_quantity) as from_curr_eur FROM movements WHERE from_currency = 'EUR';"
     result = db.consultSQL(sql)
     return result
 
 
-def calculate_balance_eur_invested():
+def calculate_balance_eur_invested():  # Calcula el saldo de EUR en invertidos
     db = DBManager(app.config["PATH"])
     sql = "SELECT sum(case when to_currency = 'EUR' then to_quantity else 0 end) - sum(case when from_currency = 'EUR' then from_quantity else 0 end) as balance_eur FROM movements;"
     result = db.consultSQL(sql)

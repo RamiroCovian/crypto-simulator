@@ -28,7 +28,7 @@ def create_purchase():
         form = MovementForm(data=movements)
         try:
             wallet = calculate_balance()
-        except Exception as e:
+        except Exception:
             flash("Error en el acceso a la base de datos", category="Error")
             return render_template("form_buy.html", form=form)
 
@@ -82,7 +82,7 @@ def create_purchase():
                     return render_template(
                         "form_buy.html", form=form, empty="yes", wallet=wallet
                     )
-            except Exception as e:
+            except Exception:
                 flash(
                     "Error de conexion de URL",
                     category="Error",
@@ -131,8 +131,7 @@ def create_purchase():
                         category="Error",
                     )
                     return render_template("form_buy.html", form=form, empty="yes")
-            except Exception as error:
-                print(error)
+            except Exception:
                 flash("Error de conexion de URL", category="Error")
                 return render_template(
                     "form_buy.html",
@@ -145,13 +144,15 @@ def create_purchase():
 @app.route("/status")
 def calculate_investment():
     try:
-        consult = calculate_sum_from_quantity()
+        consult = calculate_sum_from_quantity()  # euros invertidos
         total_euros_invested = consult[0]["from_curr_eur"]
-        consult_2 = calculate_balance_eur_invested()
+        print(total_euros_invested)
+        consult_2 = calculate_balance_eur_invested()  # saldo de euros invertidos
         balance_of_euros_invested = consult_2[0]["balance_eur"]
-
+        print(balance_of_euros_invested)
         try:
             coin_list = [
+                "EUR",
                 "BTC",
                 "ETH",
                 "USDT",
@@ -171,25 +172,54 @@ def calculate_investment():
                     dicc = api_request(url)
                     rate = dicc["rate"]
                     coin_price_list.append(rate)
-                    print(coin_price_list)
-                    print(rate)
                     i += 1
+
+            coin_with_rate = dict(
+                zip(coin_list, coin_price_list)
+            )  # precios actuales de las cryptos de coin_list
 
         except Exception as error:
             print(error)
             flash("Error de conexion de URL", category="Error")
             return render_template("investments.html")
 
-        current_value = total_euros_invested + balance_of_euros_invested
-        flash(
-            "funciona a la perfeccion", category="Exito"
-        )  ################################### BORRAR FLASH ###################################
+        wallet = calculate_balance()  # monedas en la billetera
+        values_cryptos_in_wallet = {}
+        for rate in coin_with_rate:
+            for rate in wallet:
+                values_cryptos_in_wallet[rate] = (
+                    coin_with_rate[rate] * wallet[rate]
+                )  # Multiplico las monedas de mi billetera por el valor actual
+
+        value_in_cryptos = 0
+        first_value = True
+
+        for value in values_cryptos_in_wallet.values():
+            if first_value:
+                first_value = False
+            else:
+                value_in_cryptos += value  # Valores de mis monedas sin los EUR
+
+        current_value = (
+            total_euros_invested + balance_of_euros_invested + value_in_cryptos
+        )  # Valor actual
+
+        difference_before = (
+            balance_of_euros_invested + value_in_cryptos
+        )  # Diferencia para saber si es ganancia/perdida
+
+        if difference_before >= 0:
+            status = "Positivo"
+        else:
+            status = "Negativo"
+
         return render_template(
             "investments.html",
             total_euros_invested=total_euros_invested,
             current_value=current_value,
+            difference_before=difference_before,
+            status=status,
         )
-    except Exception as error:
-        print(error)
+    except Exception:
         flash("Error en el acceso a la base de datos", category="Error")
         return render_template("investments.html")
