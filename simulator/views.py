@@ -6,6 +6,7 @@ from .models import (
     DBManager,
     api_request,
     calculate_balance,
+    calculate_balance_eur_invested,
     calculate_sum_from_quantity,
     validate,
 )
@@ -146,13 +147,16 @@ def calculate_investment():
     try:
         consult = calculate_sum_from_quantity()
         total_euros_invested = consult[0]["from_curr_eur"]
-
+        consult_2 = calculate_balance_eur_invested()
+        balance_of_euros_invested = consult_2[0]["balance_eur"]
+        current_value = total_euros_invested + balance_of_euros_invested
         flash(
             "funciona a la perfeccion", category="Exito"
         )  ################################### BORRAR FLASH ###################################
         return render_template(
             "investments.html",
             total_euros_invested=total_euros_invested,
+            current_value=current_value,
         )
     except Exception as error:
         print(error)

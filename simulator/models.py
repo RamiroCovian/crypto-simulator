@@ -144,3 +144,10 @@ def calculate_sum_from_quantity():
     sql = "SELECT sum(from_quantity) as from_curr_eur FROM movements WHERE from_currency = 'EUR';"
     result = db.consultSQL(sql)
     return result
+
+
+def calculate_balance_eur_invested():
+    db = DBManager(app.config["PATH"])
+    sql = "SELECT sum(case when to_currency = 'EUR' then to_quantity else 0 end) - sum(case when from_currency = 'EUR' then from_quantity else 0 end) as balance_eur FROM movements;"
+    result = db.consultSQL(sql)
+    return result
