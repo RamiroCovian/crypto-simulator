@@ -84,4 +84,15 @@
     </table>
     <p hidden>La fecha y hora de la compra es: {{ form.date(value=date_buy) }} a las {{ form.time(value=time_buy)}}</p>
 </form>
+<div>
+    <p>
+        <h3>Cryptos en cartera:</h3>
+        {% for coin, quantity in wallet.items()   %}
+            {% if quantity == None %}
+            {% elif quantity > 0 %}
+                <li>{{coin}} = {{quantity}}</li>
+            {% endif %}
+        {% endfor %}
+    </p>
+</div>
 {% endblock content %}
