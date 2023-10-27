@@ -34,7 +34,7 @@ class MovementForm(FlaskForm):
     to_quantity = FloatField(
         "Cantidad:",
         render_kw={"readonly": True},
-    )
+    )  # readonly modo lectura
     price_unit = FloatField(
         "Precio Unitario:",
         render_kw={"readonly": True},
