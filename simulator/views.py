@@ -46,7 +46,7 @@ def create_purchase():
             form.from_currency.choices = crypto_from
         return render_template("form_buy.html", form=form, empty="yes", wallet=wallet)
 
-    else:  # request.method == "POST":
+    else:  # "POST"
         form = MovementForm(data=request.form)
         form.from_currency.choices = [
             form.from_currency.data
@@ -106,8 +106,8 @@ def create_purchase():
                     dicc = api_request(url)
                     rate = dicc["rate"]  # Precio de la crypto
                     if amount != 0:
-                        to_quanti = rate * amount  # Cantidad de compra
-                        price_u = amount / to_quanti  # Precio Unitario
+                        to_quanti = round((rate * amount), 6)  # Cantidad de compra
+                        price_u = round((amount / to_quanti), 6)  # Precio Unitario
                         date_buy = datetime.datetime.now(
                             datetime.timezone.utc
                         ).date()  # fecha y hora del momento de la consulta API
@@ -145,7 +145,7 @@ def create_purchase():
 def calculate_investment():
     try:
         consult = calculate_sum_from_quantity()  # euros invertidos
-        total_euros_invested = consult[0]["from_curr_eur"]
+        total_euros_invested = round((consult[0]["from_curr_eur"]), 2)
         print(total_euros_invested)
         consult_2 = calculate_balance_eur_invested()  # saldo de euros invertidos
         balance_of_euros_invested = consult_2[0]["balance_eur"]
@@ -200,12 +200,12 @@ def calculate_investment():
             else:
                 value_in_cryptos += value  # Valores de mis monedas sin los EUR
 
-        current_value = (
-            total_euros_invested + balance_of_euros_invested + value_in_cryptos
+        current_value = round(
+            (total_euros_invested + balance_of_euros_invested + value_in_cryptos), 2
         )  # Valor actual
 
-        difference_before = (
-            balance_of_euros_invested + value_in_cryptos
+        difference_before = round(
+            (balance_of_euros_invested + value_in_cryptos), 2
         )  # Diferencia para saber si es ganancia/perdida
 
         if difference_before >= 0:
