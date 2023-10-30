@@ -100,45 +100,45 @@ def create_purchase():
                 return render_template(
                     "form_buy.html", form=form, empty="yes", wallet=wallet
                 )
-
-            try:
-                url = SERVER + ENDPOINT + from_curren + "/" + to_current
-                dicc = api_request(url)
-                rate = dicc["rate"]  # Precio de la crypto
-                if amount != 0:
-                    to_quanti = rate * amount  # Cantidad de compra
-                    price_u = amount / to_quanti  # Precio Unitario
-                    date_buy = datetime.datetime.now(
-                        datetime.timezone.utc
-                    ).date()  # fecha y hora del momento de la consulta API
-                    time_buy = datetime.datetime.now(datetime.timezone.utc).strftime(
-                        "%H:%M:%S"
-                    )
+            else:
+                try:
+                    url = SERVER + ENDPOINT + from_curren + "/" + to_current
+                    dicc = api_request(url)
+                    rate = dicc["rate"]  # Precio de la crypto
+                    if amount != 0:
+                        to_quanti = rate * amount  # Cantidad de compra
+                        price_u = amount / to_quanti  # Precio Unitario
+                        date_buy = datetime.datetime.now(
+                            datetime.timezone.utc
+                        ).date()  # fecha y hora del momento de la consulta API
+                        time_buy = datetime.datetime.now(
+                            datetime.timezone.utc
+                        ).strftime("%H:%M:%S")
+                        return render_template(
+                            "form_buy.html",
+                            empty="no",
+                            form=form,
+                            to_quanti=to_quanti,
+                            price_u=price_u,
+                            time_buy=time_buy,
+                            date_buy=date_buy,
+                            wallet=wallet,
+                            amount=amount,
+                        )
+                    else:
+                        flash(
+                            "OPERACIÓN INCORRECTA - La cantidad debe ser distinta de 0",
+                            category="Error",
+                        )
+                        return render_template("form_buy.html", form=form, empty="yes")
+                except Exception:
+                    flash("Error de conexion de URL", category="Error")
                     return render_template(
                         "form_buy.html",
-                        empty="no",
+                        empty="yes",
                         form=form,
-                        to_quanti=to_quanti,
-                        price_u=price_u,
-                        time_buy=time_buy,
-                        date_buy=date_buy,
                         wallet=wallet,
-                        amount=amount,
                     )
-                else:
-                    flash(
-                        "OPERACIÓN INCORRECTA - La cantidad debe ser distinta de 0",
-                        category="Error",
-                    )
-                    return render_template("form_buy.html", form=form, empty="yes")
-            except Exception:
-                flash("Error de conexion de URL", category="Error")
-                return render_template(
-                    "form_buy.html",
-                    empty="yes",
-                    form=form,
-                    wallet=wallet,
-                )
 
 
 @app.route("/status")

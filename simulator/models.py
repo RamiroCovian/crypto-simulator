@@ -101,20 +101,23 @@ def validate(amount, from_curren, to_current):  # validaciones de campos
     wallet = calculate_balance()
     try:
         if amount <= 0.00001:
-            error = flash(
+            error = 1
+            flash(
                 "OPERACIÓN INCORRECTA - La cantidad debe ser superior a 0.00001",
                 category="Error",
             )
             return error
     except Exception:
-        error = flash(
+        error = 1
+        flash(
             "OPERACIÓN INCORRECTA - Utiliza la ' , ' para separar decimales",
             category="Error",
         )
         return error
 
     if from_curren != "EUR" and wallet[from_curren] < float(amount):
-        error = flash(
+        error = 1
+        flash(
             "Usted dispone de {:.6f} {} para realizar transacciones.".format(
                 wallet[from_curren], from_curren
             ),
@@ -123,7 +126,8 @@ def validate(amount, from_curren, to_current):  # validaciones de campos
         return error
 
     if from_curren == to_current:
-        error = flash(
+        error = 1
+        flash(
             "OPERACIÓN INCORRECTA - Debe elegir dos monedas distintas",
             category="Error",
         )
