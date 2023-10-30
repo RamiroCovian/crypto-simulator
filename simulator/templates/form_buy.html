@@ -85,12 +85,16 @@
 <div>
     <p>
         <h3>Cryptos en cartera:</h3>
+        {% if wallet == "vacio" %}
+        {{"No posee monedas"}}
+        {% else %}
         {% for coin, quantity in wallet.items()   %}
             {% if quantity == None %}
             {% elif quantity > 0 %}
                 <li>{{coin}} = {{"{:.6f}".format(quantity)}}</li>
             {% endif %}
         {% endfor %}
+        {% endif %}
     </p>
 </div>
 {% endblock content %}
