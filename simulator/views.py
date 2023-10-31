@@ -106,8 +106,8 @@ def create_purchase():
                     dicc = api_request(url)
                     rate = dicc["rate"]  # Precio de la crypto
                     if amount != 0:
-                        to_quanti = round((rate * amount), 6)  # Cantidad de compra
-                        price_u = round((amount / to_quanti), 6)  # Precio Unitario
+                        to_quanti = rate * amount  # Cantidad de compra
+                        price_u = amount / to_quanti  # Precio Unitario
                         date_buy = datetime.datetime.now(
                             datetime.timezone.utc
                         ).date()  # fecha y hora del momento de la consulta API

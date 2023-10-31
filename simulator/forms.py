@@ -27,7 +27,7 @@ class MovementForm(FlaskForm):
         "Cantidad:",
         validators=[
             DataRequired(message="No puede haber un movimiento sin cantidad"),
-            NumberRange(min=0.00001, max=99999999),
+            NumberRange(min=0.000001, max=99999999),
         ],
         render_kw={"readonly": False},
     )

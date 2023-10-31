@@ -51,7 +51,7 @@
             {% if empty == "yes" %}
             <td>0</td>
             {% else %}
-            <td>{{ form.to_quantity( value= to_quanti ) }}</td>
+            <td>{{ form.to_quantity( value= "{:.6f}".format(to_quanti) ) }}</td>
             {% endif %}
         </tr>
 
@@ -63,7 +63,7 @@
             {% if empty == "yes" %}
             <td>0</td>
             {% else %}
-            <td>{{ form.price_unit( value= price_u) }}</td>
+            <td>{{ form.price_unit( value= "{:.6f}".format(price_u)) }}</td>
             {% endif %}
         </tr>
 
